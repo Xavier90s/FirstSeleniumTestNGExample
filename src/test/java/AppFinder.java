@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
  *             		It opens AppFinder page and prints and checks its title.
  *             	test02PathFinderDescription
  *             		It verifies AppFinder description text
- *              test0NSearchApp 
+ *              test0NMainSearch 
  *             		Given a keyword it searchs for apps with provided keyword.
 *******************************************************************************/
  
@@ -63,7 +63,7 @@ public class AppFinder {
     }
 
     @Test
-    public void test03PathFinderDescription() {
+    public void test02PathFinderDescription() {
     	String actual_desc1=null, expected_desc1 ="AppFinder Tool for Software Requirements Research";
     	String actual_desc2=null, expected_desc2 = "Our AppFinder tool will help you sift through the noise and create a shortlist of apps that best meet your needs. With AppFinder, you are not only able to pick what features matter to you, you can also assign their importance. It's a tool that will save you time and money to find the best business app for your company. Check out some of our most popular AppFinder categories below";
     	WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -78,8 +78,82 @@ public class AppFinder {
     	
     	
     }
+    
+
     @Test
-    public void test0NSearchApp () {
+    public void test03AppFinderCategories () {
+    	String actualurl = null;
+    	String expectedurl1="https://www.getapp.com/finance-accounting-software/accounting/appfinder/requirements/";
+    	String expectedurl2="https://www.getapp.com/finance-accounting-software/billing-invoicing/appfinder/requirements/";
+    	String expectedurl3="https://www.getapp.com/customer-management-software/crm/appfinder/requirements/";
+    	String expectedurl4="https://www.getapp.com/customer-service-support-software/customer-service/appfinder/requirements/";
+    	String expectedurl5="https://www.getapp.com/customer-service-support-software/help-desk-ticketing/appfinder/requirements/";
+    	String expectedurl6="https://www.getapp.com/hr-employee-management-software/human-resources/appfinder/requirements/";
+    	String expectedurl7="https://www.getapp.com/operations-management-software/inventory-management/appfinder/requirements/";
+    	String expectedurl8="https://www.getapp.com/marketing-software/marketing-automation/appfinder/requirements/";
+    	String expectedurl9="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
+    	
+
+    	actualurl=appFinderCategory("Accounting");
+        Assert.assertEquals(expectedurl1,actualurl,"Redirect to accounting appfinder requirements fails!");
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Billing & Invoicing");
+        Assert.assertEquals(expectedurl2,actualurl,"Redirect to Billing & Invoicing appfinder requirements fails!");
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("CRM");
+        Assert.assertEquals(expectedurl3,actualurl,"Redirect to CRM appfinder requirements fails!");
+    
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Customer Service");
+        Assert.assertEquals(expectedurl4,actualurl,"Redirect to Customer Service appfinder requirements fails!");
+        
+        
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Help Desk & Ticketing");
+        Assert.assertEquals(expectedurl5,actualurl,"Redirect to Help Desk & Ticketing appfinder requirements fails!");
+  
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Human Resources (HR)");
+        Assert.assertEquals(expectedurl6,actualurl,"Redirect to Human Resources (HR)  appfinder requirements fails!");
+     
+        driver.navigate().back();
+        actualurl=appFinderCategory("Inventory Management");
+        Assert.assertEquals(expectedurl7,actualurl,"Redirect to Inventory Management appfinder requirements fails!");
+       
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Marketing Automation");
+        Assert.assertEquals(expectedurl8,actualurl,"Redirect to Marketing Automation appfinder requirements fails!");
+       
+        
+        driver.navigate().back();
+        actualurl=appFinderCategory("Project Management");
+        Assert.assertEquals(expectedurl9,actualurl,"Redirect to Project Management appfinder requirements fails!");
+       
+    }
+    
+    public String appFinderCategory(String categoryLink)
+    {	
+    	String actual = null;
+    	WebDriverWait wait = new WebDriverWait(driver, 10);
+      	element = driver.findElement(By.linkText(categoryLink));
+      	Actions actions = new Actions(driver);
+      	actions.moveToElement(element);
+      	actions.perform();
+      	//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        
+      	element.click();
+        actual=driver.getCurrentUrl();
+        return actual;
+    }
+
+    @Test
+    public void test0NMainSearch () {
 
     
     	WebDriverWait wait = new WebDriverWait(driver, 10);
