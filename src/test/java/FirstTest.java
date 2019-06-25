@@ -63,26 +63,23 @@ public class FirstTest {
     	WebDriverWait wait = new WebDriverWait(driver, 10);
     	element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//form[2]//input[@name='query']")));
     	element.click();
-    	
-      	wait = new WebDriverWait(driver, 10);
     	element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[2]//form//span[2]//input[@name='search_keywords']")));
         element.sendKeys(keyword+Keys.RETURN);
         element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='fullSearch']")));
         element.click();
-      //*[@id="serp-page"]/div[4]/div[1]/div[6]/div[2]/div/div[2]/h2/a
-          //*[@id="fullSearch"]
-        table = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"serp-page\"]/div[4]/div[1]")));
-        System.out.println(table.getText());
-        element = table.findElement(By.linkText("Reader Plus"));  //href="/collaboration-software/a/reader-plus/"
+
+ 
+        element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Reader Plus")));  
         Assert.assertEquals(element.getText(),"Reader Plus","Searched element assertion is failed!");
-      
+        element.click();
+        /*
         wait = new WebDriverWait(driver, 10);
         System.out.println("\nELEMENT TO CLICK\n"+element.getText());
-        
-        element.findElement(By.xpath("//*[@id='serp-page']/div[4]/div[1]/div[6]/div[2]/div/div[2]/h2/a"));
+        element.findElement(By.xpath("//div[2]//div//div[2]//h2//a[@href='/collaboration-software/a/reader-plus/']"));
         
         element.click();
-        wait = new WebDriverWait(driver, 10);
+        */
+        
     }
  
     //-----------------------------------Test TearDown-----------------------------------
