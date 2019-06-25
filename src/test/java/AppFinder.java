@@ -66,8 +66,8 @@ public class AppFinder {
     public void test02PathFinderDescription() {
     	String actual_desc1=null, expected_desc1 ="AppFinder Tool for Software Requirements Research";
     	String actual_desc2=null, expected_desc2 = "Our AppFinder tool will help you sift through the noise and create a shortlist of apps that best meet your needs. With AppFinder, you are not only able to pick what features matter to you, you can also assign their importance. It's a tool that will save you time and money to find the best business app for your company. Check out some of our most popular AppFinder categories below";
-    	WebDriverWait wait = new WebDriverWait(driver, 10);
     	
+    	WebDriverWait wait = new WebDriverWait(driver, 10);
     	element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"secondary-header\"]/div/div[2]/h1")));
         actual_desc1=element.getText();
     	Assert.assertEquals(actual_desc1, expected_desc1, "AppFinder Title Description Title does not match!");
@@ -145,11 +145,41 @@ public class AppFinder {
       	Actions actions = new Actions(driver);
       	actions.moveToElement(element);
       	actions.perform();
-      	//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-        
       	element.click();
         actual=driver.getCurrentUrl();
         return actual;
+    }
+    
+    @Test
+    public void test04AppFinderCriteria () {
+    	String actualurl=null;
+    	String expectedurl="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
+    	actualurl=appFinderCategory("Project Management");
+    	Assert.assertEquals(expectedurl,actualurl,"Redirect to Project Management appfinder requirements fails!");	
+    	element=driver.findElement(By.xpath("//*[@id=\"price-block\"]/div/div/a[5]"));
+    	element.click();
+    	element=driver.findElement(By.xpath("//*[@id=\"device-block\"]/div/div[1]"));
+    	element.click();
+
+      	element = driver.findElement(By.xpath("//*[@id='collapse-4']/div/table/tbody/tr[4]/td[2]/div[1]/div/a[3]"));
+      	Actions actions = new Actions(driver);
+      	actions = new Actions(driver);
+      	actions.moveToElement(element);
+      	actions.perform();
+      	element.click();
+      	
+       	element = driver.findElement(By.id("build-your-scorecard"));
+      	actions = new Actions(driver);
+      	actions.moveToElement(element);
+      	actions.perform();
+      
+      	element.click();
+      	
+      	System.out.println(driver.getCurrentUrl());
+      
+      		
+    	
+    	
     }
 
     @Test
