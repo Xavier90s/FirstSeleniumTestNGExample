@@ -29,6 +29,8 @@ import org.testng.annotations.Test;
  *					It verifies all Criteria Features
  *				test05AppFinderCriteria
  *					It completes an AppFinder search by criteria
+ *              test06CompareAppFinderApps () 
+ *             		Given an AppFinder search it compares result Apps by features
  *              test0NMainSearch 
  *             		Given a keyword it searchs for apps with provided keyword.
 *******************************************************************************/
@@ -245,7 +247,6 @@ public class AppFinder {
     	element=driver.findElement(By.xpath("//*[@id=\"device-block\"]/div/div[1]"));
     	element.click();
     	element = driver.findElement(By.xpath("//*[@id='collapse-4']/div/table/tbody"));
-    	System.out.println("Feature Criteria"+element.getText());
       	element = driver.findElement(By.xpath("//*[@id='collapse-4']/div/table/tbody/tr[4]/td[2]/div[1]/div/a[3]"));
       	Actions actions = new Actions(driver);
       	actions = new Actions(driver);
@@ -264,7 +265,43 @@ public class AppFinder {
     	
     	
     }
+    @Test
+    public void test06CompareAppFinderApps () {
+    	test05AppFinderCriteria();
+    	element=driver.findElement(By.id("preview-your-scorecard"));
+    	element.click();
+    	Reporter.log("App compare results displayed in url:"+driver.getCurrentUrl());
+    	getFeatureDetails("Customization",4);
+    	
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/7)");
+    	getFeatureDetails("Intelligence and Reporting",5);
 
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/7)");
+ 
+    	getFeatureDetails("Usability",7);
+    	
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+    	getFeatureDetails("Task Management",9);
+        
+       	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+       	getFeatureDetails("Permissions/Security",10);
+        
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+    	getFeatureDetails("Integration",18);
+    	 
+       	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+        getFeatureDetails("Project Planning and Management",19);
+       
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+    	getFeatureDetails("Collaboration",20);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+    	getFeatureDetails("Accounting",21);
+      	 
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/(3))");
+    	getFeatureDetails("Bug and Issue tracking",22);
+ 
+    }
+   
     @Test
     public void test0NMainSearch () {
 
