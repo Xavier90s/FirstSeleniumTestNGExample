@@ -23,6 +23,12 @@ import org.testng.annotations.Test;
  *             		It opens AppFinder page and prints and checks its title.
  *             	test02PathFinderDescription
  *             		It verifies AppFinder description text
+ *              test03AppFinderCategories
+ *					It navigates to all AppFinder categories
+ *				test04AppFinderCriteriaFeatures
+ *					It verifies all Criteria Features
+ *				test05AppFinderCriteria
+ *					It completes an AppFinder search by criteria
  *              test0NMainSearch 
  *             		Given a keyword it searchs for apps with provided keyword.
 *******************************************************************************/
@@ -54,7 +60,7 @@ public class AppFinder {
     }
  
     //-----------------------------------Tests-----------------------------------
-    //@Test
+    @Test
     public void test01VerifyTitle () {
         //Get page title
         String title = driver.getTitle();
@@ -65,7 +71,7 @@ public class AppFinder {
         Assert.assertEquals(title, "AppFinder Tool for Software Requirements Research | GetApp®", "Title assertion is failed!");
     }
 
-    //@Test
+    @Test
     public void test02PathFinderDescription() {
     	String actual_desc1=null, expected_desc1 ="AppFinder Tool for Software Requirements Research";
     	String actual_desc2=null, expected_desc2 = "Our AppFinder tool will help you sift through the noise and create a shortlist of apps that best meet your needs. With AppFinder, you are not only able to pick what features matter to you, you can also assign their importance. It's a tool that will save you time and money to find the best business app for your company. Check out some of our most popular AppFinder categories below";
@@ -83,8 +89,8 @@ public class AppFinder {
     }
     
 
-    //@Test
-    public void test03AppFinderCategories () {
+    @Test
+    public void test03AppFinderCategories() {
     	String actualurl = null;
     	String expectedurl1="https://www.getapp.com/finance-accounting-software/accounting/appfinder/requirements/";
     	String expectedurl2="https://www.getapp.com/finance-accounting-software/billing-invoicing/appfinder/requirements/";
@@ -195,7 +201,7 @@ public class AppFinder {
     	verifyFeatureDetails("Bug and Issue tracking",7);
     }
     
-    //@Test
+    @Test
     public void test05AppFinderCriteria () {
     	String actualurl=null;
     	String expectedurl="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
@@ -226,7 +232,7 @@ public class AppFinder {
     	
     }
 
-    //@Test
+    @Test
     public void test0NMainSearch () {
 
     
