@@ -1,6 +1,8 @@
 import org.testng.annotations.Test;
 import org.testng.AssertJUnit;
+import org.testng.Reporter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,14 +46,15 @@ public class AppFinder {
     	System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
         //Create a new ChromeDriver
         driver = new ChromeDriver();
- 
-        //Go to www.swtestacademy.com
+    	//driver.get("chrome://settings/");
+    	//((JavascriptExecutor) driver).executeScript("chrome.settingsPrivate.setDefaultZoom(0.5);");
+        //Go to getapp.com
         driver.navigate().to(testURL);
         driver.manage().window().maximize();
     }
  
     //-----------------------------------Tests-----------------------------------
-    @Test
+    //@Test
     public void test01VerifyTitle () {
         //Get page title
         String title = driver.getTitle();
@@ -62,7 +65,7 @@ public class AppFinder {
         Assert.assertEquals(title, "AppFinder Tool for Software Requirements Research | GetApp®", "Title assertion is failed!");
     }
 
-    @Test
+    //@Test
     public void test02PathFinderDescription() {
     	String actual_desc1=null, expected_desc1 ="AppFinder Tool for Software Requirements Research";
     	String actual_desc2=null, expected_desc2 = "Our AppFinder tool will help you sift through the noise and create a shortlist of apps that best meet your needs. With AppFinder, you are not only able to pick what features matter to you, you can also assign their importance. It's a tool that will save you time and money to find the best business app for your company. Check out some of our most popular AppFinder categories below";
@@ -80,7 +83,7 @@ public class AppFinder {
     }
     
 
-    @Test
+    //@Test
     public void test03AppFinderCategories () {
     	String actualurl = null;
     	String expectedurl1="https://www.getapp.com/finance-accounting-software/accounting/appfinder/requirements/";
@@ -95,11 +98,11 @@ public class AppFinder {
     	
 
     	actualurl=appFinderCategory("Accounting");
-        Assert.assertEquals(expectedurl1,actualurl,"Redirect to accounting appfinder requirements fails!");
+        Assert.assertEquals(actualurl,expectedurl1,"Redirect to accounting appfinder requirements fails!");
         
         driver.navigate().back();
         actualurl=appFinderCategory("Billing & Invoicing");
-        Assert.assertEquals(expectedurl2,actualurl,"Redirect to Billing & Invoicing appfinder requirements fails!");
+        Assert.assertEquals(actualurl,expectedurl2,"Redirect to Billing & Invoicing appfinder requirements fails!");
         
         driver.navigate().back();
         actualurl=appFinderCategory("CRM");
@@ -140,7 +143,6 @@ public class AppFinder {
     public String appFinderCategory(String categoryLink)
     {	
     	String actual = null;
-    	WebDriverWait wait = new WebDriverWait(driver, 10);
       	element = driver.findElement(By.linkText(categoryLink));
       	Actions actions = new Actions(driver);
       	actions.moveToElement(element);
@@ -150,8 +152,51 @@ public class AppFinder {
         return actual;
     }
     
+    public void verifyFeatureDetails(String feature,int detailpos) {
+        element = driver.findElement(By.linkText(feature)); 
+    	System.out.println("\nFeature Header: "+  element.getText());
+
+    	if(feature.contains("Customization") == false) {
+    		element.click();
+    	}
+      	element=driver.findElement(By.xpath("//*[@id='collapse-"+detailpos+"']/div/table/tbody"));
+    	System.out.println("Detailed Features:\n"+ element.getText());
+    	element = driver.findElement(By.linkText(feature));
+    	element.click();
+    	
+    	
+    }
     @Test
-    public void test04AppFinderCriteria () {
+    public void test04AppFinderCriteriaFeatures () {
+    	//    	 	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        driver.navigate().to(testURL);
+    	String actualurl=null;
+    	String expectedurl="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
+    	actualurl=appFinderCategory("Project Management");
+    	Assert.assertEquals(actualurl,expectedurl,"Redirect to Project Management appfinder requirements fails!");
+    	
+    	verifyFeatureDetails("Customization",4);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
+    	verifyFeatureDetails("Intelligence and Reporting",5);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+    	verifyFeatureDetails("Usability",7);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+
+    	verifyFeatureDetails("Task Management",9);
+
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+  
+    	verifyFeatureDetails("Integration",18);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/2)");
+    	verifyFeatureDetails("Collaboration",20);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/2)");
+    	verifyFeatureDetails("Accounting",21);
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/(1.5))");
+    	verifyFeatureDetails("Bug and Issue tracking",7);
+    }
+    
+    //@Test
+    public void test05AppFinderCriteria () {
     	String actualurl=null;
     	String expectedurl="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
     	actualurl=appFinderCategory("Project Management");
@@ -160,7 +205,8 @@ public class AppFinder {
     	element.click();
     	element=driver.findElement(By.xpath("//*[@id=\"device-block\"]/div/div[1]"));
     	element.click();
-
+    	element = driver.findElement(By.xpath("//*[@id='collapse-4']/div/table/tbody"));
+    	System.out.println("Feature Criteria"+element.getText());
       	element = driver.findElement(By.xpath("//*[@id='collapse-4']/div/table/tbody/tr[4]/td[2]/div[1]/div/a[3]"));
       	Actions actions = new Actions(driver);
       	actions = new Actions(driver);
@@ -174,15 +220,13 @@ public class AppFinder {
       	actions.perform();
       
       	element.click();
-      	
-      	System.out.println(driver.getCurrentUrl());
-      
+      	Reporter.log("App search results displayed in url:"+driver.getCurrentUrl());
       		
     	
     	
     }
 
-    @Test
+    //@Test
     public void test0NMainSearch () {
 
     
