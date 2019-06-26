@@ -158,48 +158,81 @@ public class AppFinder {
         return actual;
     }
     
-    public void verifyFeatureDetails(String feature,int detailpos) {
+    public String getFeatureDetails(String feature,int detailpos) {
+    	WebDriverWait wait = new WebDriverWait(driver, 10);
+    	String actualfeature=null, detailedfeature=null;
         element = driver.findElement(By.linkText(feature)); 
-    	System.out.println("\nFeature Header: "+  element.getText());
+        actualfeature=element.getText();
+        Assert.assertEquals(actualfeature, feature);
 
     	if(feature.contains("Customization") == false) {
+          	Actions actions = new Actions(driver);
+          	actions.moveToElement(element);
+          	actions.perform();
+          	element.click();
     		element.click();
     	}
-      	element=driver.findElement(By.xpath("//*[@id='collapse-"+detailpos+"']/div/table/tbody"));
-    	System.out.println("Detailed Features:\n"+ element.getText());
+      	element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='collapse-"+detailpos+"']/div/table/tbody")));
+    	detailedfeature=element.getText();
+    	try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	element = driver.findElement(By.linkText(feature));
+
     	element.click();
     	
-    	
+    	return detailedfeature;
     }
     @Test
     public void test04AppFinderCriteriaFeatures () {
-    	//    	 	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+  
         driver.navigate().to(testURL);
-    	String actualurl=null;
+    	String actualurl=null, actualfeaturedesc=null;
     	String expectedurl="https://www.getapp.com/project-management-planning-software/project-management/appfinder/requirements/";
     	actualurl=appFinderCategory("Project Management");
     	Assert.assertEquals(actualurl,expectedurl,"Redirect to Project Management appfinder requirements fails!");
     	
-    	verifyFeatureDetails("Customization",4);
+    	actualfeaturedesc=getFeatureDetails("Customization",4);
+    	Assert.assertTrue(actualfeaturedesc.contains("Automatic Notifications")&&actualfeaturedesc.contains("Automatic Reminders")&&actualfeaturedesc.contains("Configurable Workflow")&&actualfeaturedesc.contains("Customizable Reporting")&&actualfeaturedesc.contains("Customizable Templates"));
+        
     	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/5)");
-    	verifyFeatureDetails("Intelligence and Reporting",5);
+    	actualfeaturedesc=getFeatureDetails("Intelligence and Reporting",5);
+    	Assert.assertTrue(actualfeaturedesc.contains("Activity Management")&&actualfeaturedesc.contains("Activity Tracking")&&actualfeaturedesc.contains("Progress Reports")&&actualfeaturedesc.contains("Activity Dashboard")&&actualfeaturedesc.contains("Milestone Tracking"));
+        
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/4.5)");
+    	actualfeaturedesc=getFeatureDetails("Usability",7);
+    	Assert.assertTrue(actualfeaturedesc.contains("Document Storage")&&actualfeaturedesc.contains("File Transfer")&&actualfeaturedesc.contains("Multi-Currency")&&actualfeaturedesc.contains("Drag & Drop Interface")&&actualfeaturedesc.contains("Access Control"));
+        
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/4)");
+    	actualfeaturedesc=getFeatureDetails("Task Management",9);
+    	Assert.assertTrue(actualfeaturedesc.contains("Recurring Tasks")&&actualfeaturedesc.contains("Task Planning")&&actualfeaturedesc.contains("Task Scheduling")&&actualfeaturedesc.contains("Task Tracking")&&actualfeaturedesc.contains("To-Do List"));
+        
+       	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+       	actualfeaturedesc=getFeatureDetails("Permissions/Security",10);
+     	Assert.assertTrue(actualfeaturedesc.contains("Audit Trail")&&actualfeaturedesc.contains("Permission Management")&&actualfeaturedesc.contains("Single Sign On")&&actualfeaturedesc.contains("Version Control"));
+        
     	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
-    	verifyFeatureDetails("Usability",7);
+    	actualfeaturedesc=getFeatureDetails("Integration",18);
+    	Assert.assertTrue(actualfeaturedesc.contains("Accounting Integration")&&actualfeaturedesc.contains("Email Integration")&&actualfeaturedesc.contains("Third Party Integration")&&actualfeaturedesc.contains("Data Import/Export")&&actualfeaturedesc.contains("API"));
+    	 
+       	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
+       	actualfeaturedesc=getFeatureDetails("Project Planning and Management",19);
+      	Assert.assertTrue(actualfeaturedesc.contains("Gantt Charts")&&actualfeaturedesc.contains("Project Accounting")&&actualfeaturedesc.contains("Project Notes")&&actualfeaturedesc.contains("Project Planning")&&actualfeaturedesc.contains("Project Tracking")&&actualfeaturedesc.contains("Template Management"));
+        
     	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
-
-    	verifyFeatureDetails("Task Management",9);
-
+    	actualfeaturedesc=getFeatureDetails("Collaboration",20);
+    	Assert.assertTrue(actualfeaturedesc.contains("Collaborative Review")&&actualfeaturedesc.contains("Communication Management")&&actualfeaturedesc.contains("Chat")&&actualfeaturedesc.contains("Collaboration Tools"));
     	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/3)");
-  
-    	verifyFeatureDetails("Integration",18);
-    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/2)");
-    	verifyFeatureDetails("Collaboration",20);
-    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/2)");
-    	verifyFeatureDetails("Accounting",21);
-    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/(1.5))");
-    	verifyFeatureDetails("Bug and Issue tracking",7);
-    }
+    	actualfeaturedesc=getFeatureDetails("Accounting",21);
+      	Assert.assertTrue(actualfeaturedesc.contains("Financial Management")&&actualfeaturedesc.contains("Invoice Management")&&actualfeaturedesc.contains("Job Costing")&&actualfeaturedesc.contains("Resource Management")&&actualfeaturedesc.contains("Budgeting")&&actualfeaturedesc.contains("Time & Expense Tracking"));
+      	 
+    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight/(3))");
+    	actualfeaturedesc=getFeatureDetails("Bug and Issue tracking",22);
+    	Assert.assertTrue(actualfeaturedesc.contains("Issue Management")&&actualfeaturedesc.contains("Status Reporting")&&actualfeaturedesc.contains("Status Tracking")&&actualfeaturedesc.contains("Status Reporting")&&actualfeaturedesc.contains("Issue Tracking")&&actualfeaturedesc.contains("Bug Tracking"));
+     }
     
     @Test
     public void test05AppFinderCriteria () {
